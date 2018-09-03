@@ -152,7 +152,8 @@ namespace SwapSelection
             var componentModel = (IComponentModel)componentMod;
             var editor = componentModel.GetService<IVsEditorAdaptersFactoryService>();
 
-            txtManager.GetActiveView(1, null, out IVsTextView textViewCurrent);
+            IVsTextView textViewCurrent;
+            txtManager.GetActiveView(1, null, out textViewCurrent);
             m_textView = editor.GetWpfTextView(textViewCurrent);
             _buffer = m_textView.TextBuffer;
         }
