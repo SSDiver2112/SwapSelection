@@ -71,7 +71,7 @@
       <Bitmap guid="guidImages" href="Resources\CommandSwap.png" usedList="bmpPic1"/>
     </Bitmaps>
   </Commands>
-  
+   
   <KeyBindings>
     <KeyBinding guid="guidCommandSwapPackageCmdSet" id="CommandSwapId" editor="guidVSStd97" mod1="Alt" key1="S"  />
   </KeyBindings>
