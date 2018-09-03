@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio;
@@ -26,22 +25,16 @@ namespace SwapSelection
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("Swap Selection", "Using Multi-Selection to select two pieces of text and then swap them.", "1.0", IconResourceID = 400)] // Info on this package for Help/About
+    [InstalledProductRegistration("Swap Selection", "Using Multi-Selection to select two pieces of text and then swap them.", Vsix.Version, IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(CommandSwapPackage.PackageGuidString)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [Guid(PackageGuids.guidCommandSwapPackageString)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
-    public sealed class CommandSwapPackage : AsyncPackage
+    public sealed class VSPackage : AsyncPackage
     {
         /// <summary>
-        /// CommandSwapPackage GUID string.
+        /// Initializes a new instance of the <see cref="VSPackage"/> class.
         /// </summary>
-        public const string PackageGuidString = "09e96945-c6f5-4016-accb-3e0e1959bf46";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandSwapPackage"/> class.
-        /// </summary>
-        public CommandSwapPackage()
+        public VSPackage()
         {
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but
@@ -58,14 +51,14 @@ namespace SwapSelection
         /// <param name="cancellationToken">A cancellation token to monitor for initialization cancellation, which can occur when VS is shutting down.</param>
         /// <param name="progress">A provider for progress updates.</param>
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
-        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async Task InitializeAsync(CancellationToken cancellationToken,
+                                                      IProgress<ServiceProgressData> progress)
         {
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await CommandSwap.InitializeAsync(this);
         }
-
         #endregion
     }
 }

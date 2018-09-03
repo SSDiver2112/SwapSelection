@@ -4,7 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/wxq2f8fr7v78u64d?svg=true)](https://ci.appveyor.com/project/SSDiver2112/swapselection)
 
 <!-- Update the VS Gallery link after you upload the VSIX-->
-Download this extension from the [VS Gallery](https://visualstudiogallery.msdn.microsoft.com/[GuidFromGallery])
+Download this extension from the [VS Gallery](https://marketplace.visualstudio.com/items?itemName=SSDiver2112.SwapSelection)
 or get the [CI build](http://vsixgallery.com/extension/cc65354e-e926-4e76-ac83-370537081730/).
 
 ---------------------------------------
