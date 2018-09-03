@@ -42,8 +42,8 @@ namespace SwapSelection
         /// <param name="commandService">Command service to add command to, not null.</param>
         private CommandSwap(AsyncPackage package, OleMenuCommandService commandService)
         {
-            this.package = package ?? throw new ArgumentNullException(nameof(package));
-            commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+            this.package = package;//?? throw new ArgumentNullException(nameof(package));
+                                   // commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new OleMenuCommand(this.Execute, menuCommandID);
