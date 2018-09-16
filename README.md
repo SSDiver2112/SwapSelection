@@ -26,6 +26,20 @@ Right-Click and select 'Swap Selection' or Shortcut Key Alt-S.
 
 ![Context Menu](art/SwapSelectionMenu.png)
 
+### Options
+
+Use the Tools/Options page to change the Color and type of thw Swap adornment.
+
+![Context Menu](art/SwapSelectionOptions.png)
+
+Use the Tools/Options page to change the Color and type of thw Swap adornment.
+
+Type 1 ![Context Menu](art/SwapSelectionType1.png)
+
+Type 2 ![Context Menu](art/SwapSelectionType2.png)
+
+Type 3 ![Context Menu](art/SwapSelectionType3.png)
+
 
 ## Contribute
 Check out the [contribution guidelines](CONTRIBUTING.md)

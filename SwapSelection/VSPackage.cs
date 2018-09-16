@@ -25,12 +25,20 @@ namespace SwapSelection
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("Swap Selection", "Using Multi-Selection to select two pieces of text and then swap them.", Vsix.Version, IconResourceID = 400)] // Info on this package for Help/About
+    [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuids.guidCommandSwapPackageString)]
+    [ProvideOptionPage(typeof(Options), "Environment", "Swap Selection", 0, 0, true, ProvidesLocalizedCategoryName = false)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class VSPackage : AsyncPackage
     {
+        public static Options Options
+        {
+            get;
+            private set;
+        }
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VSPackage"/> class.
         /// </summary>
@@ -51,13 +59,14 @@ namespace SwapSelection
         /// <param name="cancellationToken">A cancellation token to monitor for initialization cancellation, which can occur when VS is shutting down.</param>
         /// <param name="progress">A provider for progress updates.</param>
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
-        protected override async Task InitializeAsync(CancellationToken cancellationToken,
-                                                      IProgress<ServiceProgressData> progress)
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            Options = (Options)GetDialogPage(typeof(Options));
             await CommandSwap.InitializeAsync(this);
+
         }
         #endregion
     }

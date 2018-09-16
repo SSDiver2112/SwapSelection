@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using Microsoft;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
@@ -17,7 +19,6 @@ namespace SwapSelection
     {
         private IWpfTextView m_textView;
         private ITextBuffer _buffer;
-
 
         /// <summary>
         /// Command ID.
@@ -49,7 +50,7 @@ namespace SwapSelection
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new OleMenuCommand(this.Execute, menuCommandID);
 
-            // menuItem.BeforeQueryStatus += MyQueryStatusAsync;
+             menuItem.BeforeQueryStatus += MyQueryStatus;
             commandService.AddCommand(menuItem);
         }
 
@@ -65,7 +66,7 @@ namespace SwapSelection
         /// <summary>
         /// Gets the service provider from the owner package.
         /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
+        private IServiceProvider ServiceProvider
         {
             get
             {
@@ -87,24 +88,20 @@ namespace SwapSelection
             Instance = new CommandSwap(package, commandService);
         }
 
+        private  void MyQueryStatus(object sender, EventArgs e)
+        {
+            OleMenuCommand button = (OleMenuCommand)sender;
+            button.Visible = ValidateSelectionAsync();
+        }
 
-        //TODO: Not always working before menu opens
-        //private async void MyQueryStatusAsync(object sender, EventArgs e)
-        //{
-        //    OleMenuCommand button = (OleMenuCommand)sender;
-        //    button.Visible = await ValidateSelectionAsync();
-        //}
+        private bool ValidateSelectionAsync()
+        {
+            m_textView = GetCurrentTextView();
 
-        //private async Task<bool> ValidateSelectionAsync()
-        //{
-        //    await GetWpfViewAsync();
+            var mItems = m_textView.Selection.SelectedSpans;
 
-        //    // Make the button invisible by default
-
-        //    var mItems = m_textView.Selection.SelectedSpans;
-        //    // Show the button only if a supported file is selected
-        //    return mItems.Count == 2;
-        //}
+            return mItems.Count == 2 && (mItems[0].GetText().Length > 0 && mItems[1].GetText().Length > 0);
+        }
 
         /// <summary>
         /// This function is the callback used to execute the command when the menu item is clicked.
@@ -116,19 +113,16 @@ namespace SwapSelection
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var w = ExecSwapAsync();
+            ExecSwap();
         }
 
-        private async Task ExecSwapAsync()
+        private void ExecSwap()
         {
-            //DTE2 dte = await GetDTE();
-            //Assumes.Present(dte);
+            m_textView = GetCurrentTextView();
+            _buffer = m_textView.TextBuffer;
 
-            await GetWpfViewAsync();
-
-            // var items = dte.ActiveDocument.Object("TextDocument") as TextDocument;
             var mItems = m_textView.Selection.SelectedSpans;
-            if (mItems.Count == 2)
+            if(mItems.Count == 2 && (mItems[0].GetText().Length > 0 && mItems[1].GetText().Length > 0))
             {
                 var selected1 = mItems[0].GetText();
                 var selected2 = mItems[1].GetText();
@@ -139,24 +133,25 @@ namespace SwapSelection
             }
         }
 
-        //private async Task<DTE2> GetDTE()
-        //{
-        //    return await this.ServiceProvider.GetServiceAsync(typeof(DTE)) as DTE2;
-        //}
-
-        private async Task GetWpfViewAsync()
+        public IWpfTextView GetCurrentTextView()
         {
-            var txtMgr = await ServiceProvider.GetServiceAsync(typeof(SVsTextManager));
-            var txtManager = (IVsTextManager)txtMgr;
+            return GetTextView();
+        }
 
-            var componentMod = await ServiceProvider.GetServiceAsync(typeof(SComponentModel));
-            var componentModel = (IComponentModel)componentMod;
-            var editor = componentModel.GetService<IVsEditorAdaptersFactoryService>();
+        public IWpfTextView GetTextView()
+        {
+            var compService = ServiceProvider.GetService(typeof(SComponentModel)) as IComponentModel;
+            Assumes.Present(compService);
+            IVsEditorAdaptersFactoryService editorAdapter = compService.GetService<IVsEditorAdaptersFactoryService>();
+            return editorAdapter.GetWpfTextView(GetCurrentNativeTextView());
+        }
 
-            IVsTextView textViewCurrent;//Cannot be inline with out because causes error on AppVeyor Build
-            txtManager.GetActiveView(1, null, out textViewCurrent);
-            m_textView = editor.GetWpfTextView(textViewCurrent);
-            _buffer = m_textView.TextBuffer;
+        public IVsTextView GetCurrentNativeTextView()
+        {
+            var textManager = (IVsTextManager)ServiceProvider.GetService(typeof(SVsTextManager));
+            Assumes.Present(textManager);
+            ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out IVsTextView activeView));
+            return activeView;
         }
     }
 }

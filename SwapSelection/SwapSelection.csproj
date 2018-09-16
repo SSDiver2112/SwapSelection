@@ -55,6 +55,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandSwap.cs" />
+    <Compile Include="Options\ColorListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Options\mColorEditor.cs" />
+    <Compile Include="Options\Options.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SwapAdornment.cs" />
+    <Compile Include="SwapAdornmentTextViewCreationListener.cs" />
     <Compile Include="VSPackage.cs" />
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>

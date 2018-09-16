@@ -55,8 +55,11 @@
       <Button guid="guidCommandSwapPackageCmdSet" id="CommandSwapId" priority="0x0100" type="Button">
         <Parent guid="guidCommandSwapPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Swap Selection</ButtonText>
+          <LocCanonicalName>View.SwapSelection</LocCanonicalName>
         </Strings>
       </Button>
     </Buttons>
