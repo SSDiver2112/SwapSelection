@@ -4,6 +4,7 @@
         <Identity Id="cc65354e-e926-4e76-ac83-370537081730" Version="1.1" Language="en-US" Publisher="SSDiver" />
         <DisplayName>Swap Selection</DisplayName>
         <Description xml:space="preserve"> Using Multi-Selection to select two pieces of text and then swap them.</Description>
+        <MoreInfo>https://github.com/SSDiver2112/SwapSelection/</MoreInfo>
         <License>Resources\LICENSE</License>
         <ReleaseNotes>https://github.com/SSDiver2112/SwapSelection/blob/master/CHANGELOG.md</ReleaseNotes>
         <Icon>Resources\Icon.png</Icon>
