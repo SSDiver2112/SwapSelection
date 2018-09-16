@@ -150,7 +150,8 @@ namespace SwapSelection
         {
             var textManager = (IVsTextManager)ServiceProvider.GetService(typeof(SVsTextManager));
             Assumes.Present(textManager);
-            ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out IVsTextView activeView));
+            IVsTextView activeView;
+                ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out activeView));
             return activeView;
         }
     }
