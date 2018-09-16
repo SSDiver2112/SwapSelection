@@ -15,7 +15,7 @@ See the [change log](CHANGELOG.md) for changes and road map.
 
 ## Features
 
-- Use Multi-Selection to select two pieces of text and then swap them.
+- Use Multi-Selection to select two pieces of text and then swap them. 
 
 ### Swap Selected Text
 
