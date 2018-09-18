@@ -1,6 +1,6 @@
 # Road map
 
-- [ ] ?...
+- [ ] ?... My mind is a raging torrent, flooded with rivulets of thought cascading into a waterfall of creative alternatives.
 
 Features that have a checkmark are complete and available for
 download in the
@@ -10,6 +10,11 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+
+## 1.2
+
+- [X] Two selections that are identical will not be considered swappable anymore.
 
 ## 1.1
 

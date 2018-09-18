@@ -11,7 +11,7 @@ namespace SwapSelection
         public const string Name = "Swap Selection";
         public const string Description = @" Using Multi-Selection to select two pieces of text and then swap them.";
         public const string Language = "en-US";
-        public const string Version = "1.1";
+        public const string Version = "1.2";
         public const string Author = "SSDiver";
         public const string Tags = "Multi Select, Selection, Swap, Switch";
     }

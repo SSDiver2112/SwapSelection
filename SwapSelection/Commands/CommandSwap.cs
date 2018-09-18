@@ -50,7 +50,7 @@ namespace SwapSelection
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new OleMenuCommand(this.Execute, menuCommandID);
 
-             menuItem.BeforeQueryStatus += MyQueryStatus;
+            menuItem.BeforeQueryStatus += MyQueryStatus;
             commandService.AddCommand(menuItem);
         }
 
@@ -88,7 +88,7 @@ namespace SwapSelection
             Instance = new CommandSwap(package, commandService);
         }
 
-        private  void MyQueryStatus(object sender, EventArgs e)
+        private void MyQueryStatus(object sender, EventArgs e)
         {
             OleMenuCommand button = (OleMenuCommand)sender;
             button.Visible = ValidateSelectionAsync();
@@ -99,8 +99,16 @@ namespace SwapSelection
             m_textView = GetCurrentTextView();
 
             var mItems = m_textView.Selection.SelectedSpans;
-
-            return mItems.Count == 2 && (mItems[0].GetText().Length > 0 && mItems[1].GetText().Length > 0);
+            if (mItems.Count == 2)
+            {
+                var selected1 = mItems[0].GetText();
+                var selected2 = mItems[1].GetText();
+                return (selected1.Length > 0 && selected2.Length > 0) && selected1 != selected2;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -122,14 +130,17 @@ namespace SwapSelection
             _buffer = m_textView.TextBuffer;
 
             var mItems = m_textView.Selection.SelectedSpans;
-            if(mItems.Count == 2 && (mItems[0].GetText().Length > 0 && mItems[1].GetText().Length > 0))
+            if (mItems.Count == 2)
             {
                 var selected1 = mItems[0].GetText();
                 var selected2 = mItems[1].GetText();
-                var textEdit = _buffer.CreateEdit();
-                textEdit.Replace(mItems[0], selected2);
-                textEdit.Replace(mItems[1], selected1);
-                textEdit.Apply();
+                if ((selected1.Length > 0 && selected2.Length > 0) && selected1 != selected2)
+                {
+                    var textEdit = _buffer.CreateEdit();
+                    textEdit.Replace(mItems[0], selected2);
+                    textEdit.Replace(mItems[1], selected1);
+                    textEdit.Apply();
+                }
             }
         }
 
@@ -151,7 +162,7 @@ namespace SwapSelection
             var textManager = (IVsTextManager)ServiceProvider.GetService(typeof(SVsTextManager));
             Assumes.Present(textManager);
             IVsTextView activeView;
-                ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out activeView));
+            ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out activeView));
             return activeView;
         }
     }

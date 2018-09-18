@@ -28,11 +28,10 @@ Right-Click and select 'Swap Selection' or Shortcut Key Alt-S.
 
 ### Options
 
-Use the Tools/Options page to change the Color and type of thw Swap adornment.
+Use the Tools/Options page to change the Color and type of the Swap adornment.
 
 ![Options](art/SwapSelectionOptions.png)
 
-Use the Tools/Options page to change the Color and type of thw Swap adornment.
 
 Type 1 ![Swap Type](art/SwapSelectionType1.png)
 

@@ -55,9 +55,18 @@ namespace SwapSelection
         private void CheckMultiSelect()
         {
             var mItems = view.Selection.SelectedSpans;
-            if (mItems.Count == 2 && (mItems[0].GetText().Length > 0 && mItems[1].GetText().Length > 0))
+            if (mItems.Count == 2)
             {
-                this.CreateVisuals();
+                var selected1 = mItems[0].GetText();
+                var selected2 = mItems[1].GetText();
+                if ((selected1.Length > 0 && selected2.Length > 0) && selected1 != selected2)
+                {
+                    this.CreateVisuals();
+                }
+                else
+                {
+                    this.layer.RemoveAllAdornments();
+                }
             }
             else
             {
@@ -131,7 +140,7 @@ namespace SwapSelection
 
                     if (whichSwap == 1)
                     {
-                        Canvas.SetLeft(swapImage, swapRect.Right-drawing.Bounds.Width);
+                        Canvas.SetLeft(swapImage, swapRect.Right - drawing.Bounds.Width);
                         Canvas.SetTop(swapImage, swapRect.Top);
 
                         swapImage.RenderTransformOrigin = new Point(0.5, 0.5);
@@ -157,7 +166,7 @@ namespace SwapSelection
             GeometryGroup gmgp = new GeometryGroup();
             PathGeometry ArrowBadgeGeometry = new PathGeometry() { Figures = new PathFigureCollection() };
             PathFigure pathFigureArrowBadge = new PathFigure();
-                       
+
             LineSegment ArrowBadgeTop = new LineSegment();
             LineSegment ArrowBadgeBottom = new LineSegment();
             pathFigureArrowBadge.IsFilled = true;
@@ -190,9 +199,9 @@ namespace SwapSelection
 
             pathFigureSquareBracket.IsFilled = false;
             pathFigureSquareBracket.StartPoint = new Point(swapRect.X + 10, swapRect.Top);
-            SquareBracketTop.Point = new Point(swapRect.X, swapRect.Top );
-            SquareBracketSide.Point = new Point(swapRect.X, swapRect.Bottom-6);
-            SquareBracketBottom.Point = new Point(swapRect.X+10, swapRect.Bottom-6);
+            SquareBracketTop.Point = new Point(swapRect.X, swapRect.Top);
+            SquareBracketSide.Point = new Point(swapRect.X, swapRect.Bottom - 6);
+            SquareBracketBottom.Point = new Point(swapRect.X + 10, swapRect.Bottom - 6);
 
             pathFigureSquareBracket.Segments.Add(SquareBracketTop);
             pathFigureSquareBracket.Segments.Add(SquareBracketSide);
@@ -204,7 +213,7 @@ namespace SwapSelection
             LineSegment ArrowBracketBottom = new LineSegment();
             pathFigureArrowBracket.IsFilled = true;
             pathFigureArrowBracket.IsClosed = true;
-            pathFigureArrowBracket.StartPoint = new Point(swapRect.X + 10, swapRect.Top-2);
+            pathFigureArrowBracket.StartPoint = new Point(swapRect.X + 10, swapRect.Top - 2);
             ArrowBracketTop.Point = new Point(swapRect.X + 15, swapRect.Top);
             ArrowBracketBottom.Point = new Point(swapRect.X + 10, swapRect.Top + 2);
 
@@ -231,7 +240,7 @@ namespace SwapSelection
             pathFigureCurve.StartPoint = new Point(rect.X + 5, rect.Bottom - 1);
             curve.Point1 = new Point(rect.X - 6, rect.Y + 4);
             curve.Point2 = new Point(rect.X + 4, rect.Y - 2.5);
-            curve.Point3 = new Point(rect.Right-(rect.Width/4), rect.Y + 5);
+            curve.Point3 = new Point(rect.Right - (rect.Width / 4), rect.Y + 5);
             pathFigureCurve.Segments.Add(curve);
 
             linePathGeometry.Figures.Add(pathFigureCurve);
@@ -240,7 +249,7 @@ namespace SwapSelection
             double yDiff = curve.Point2.Y - curve.Point3.Y;
             double angle = Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI;
             angle += 180;
-            
+
             pathFigureArrowHead.StartPoint = new Point(curve.Point3.X + 4, curve.Point3.Y);
             LineSegment lineSegmentA = new LineSegment();
             lineSegmentA.Point = new Point(curve.Point3.X, curve.Point3.Y + 2);
