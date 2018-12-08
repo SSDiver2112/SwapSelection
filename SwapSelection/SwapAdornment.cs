@@ -36,7 +36,7 @@ namespace SwapSelection
         {
             if (view == null)
             {
-                throw new ArgumentNullException("view");
+                return;//throw new ArgumentNullException("view");
             }
 
             this.layer = view.GetAdornmentLayer("SwapAdornment");
