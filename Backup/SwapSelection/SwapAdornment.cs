@@ -95,8 +95,7 @@ namespace SwapSelection
         private void CreateVisuals()
         {
             this.layer.RemoveAllAdornments();
-            if (VSPackage.Options is null) return; 
-             var swapColor = (Color)ColorConverter.ConvertFromString(VSPackage.Options.ArrowColor);
+            var swapColor = (Color)ColorConverter.ConvertFromString(VSPackage.Options.ArrowColor);
 
             var swapPenBrush = new SolidColorBrush(swapColor);
             swapPenBrush.Freeze();
