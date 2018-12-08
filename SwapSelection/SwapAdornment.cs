@@ -36,7 +36,7 @@ namespace SwapSelection
         {
             if (view == null)
             {
-                return;//throw new ArgumentNullException("view");
+               throw new ArgumentNullException("view");
             }
 
             this.layer = view.GetAdornmentLayer("SwapAdornment");
@@ -94,8 +94,9 @@ namespace SwapSelection
         /// <param name="line">Line to add the adornments</param>
         private void CreateVisuals()
         {
+            if (VSPackage.Options != null)
+            { 
             this.layer.RemoveAllAdornments();
-            if (VSPackage.Options is null) return; 
              var swapColor = (Color)ColorConverter.ConvertFromString(VSPackage.Options.ArrowColor);
 
             var swapPenBrush = new SolidColorBrush(swapColor);
@@ -109,55 +110,56 @@ namespace SwapSelection
             {
 
                 Geometry geometry = textViewLines.GetMarkerGeometry(snapshotSpan);
-                if (geometry != null)
-                {
-                    Rect swapRect = new Rect(geometry.Bounds.Location, geometry.Bounds.Size);
-                    swapRect.Inflate(4, 4);
-                    GeometryGroup swapLine = new GeometryGroup();
-
-                    switch (VSPackage.Options.AdornmentType)
+                    if (geometry != null)
                     {
-                        case 1:
-                            swapLine = MakeSwapArrow(swapRect);
-                            break;
-                        case 2:
-                            swapLine = MakeSwapBracket(swapRect);
-                            break;
-                        case 3:
-                            swapLine = MakeSwapBadge(swapRect);
-                            break;
+                        Rect swapRect = new Rect(geometry.Bounds.Location, geometry.Bounds.Size);
+                        swapRect.Inflate(4, 4);
+                        GeometryGroup swapLine = new GeometryGroup();
+
+                        switch (VSPackage.Options.AdornmentType)
+                        {
+                            case 1:
+                                swapLine = MakeSwapArrow(swapRect);
+                                break;
+                            case 2:
+                                swapLine = MakeSwapBracket(swapRect);
+                                break;
+                            case 3:
+                                swapLine = MakeSwapBadge(swapRect);
+                                break;
+                        }
+
+                        var drawing = new GeometryDrawing(new SolidColorBrush(swapColor), swapPen, swapLine);
+                        drawing.Freeze();
+
+                        var drawingImage = new DrawingImage(drawing);
+                        drawingImage.Freeze();
+
+                        var swapImage = new Image
+                        {
+                            Source = drawingImage,
+                        };
+
+                        if (whichSwap == 1)
+                        {
+                            Canvas.SetLeft(swapImage, swapRect.Right - drawing.Bounds.Width);
+                            Canvas.SetTop(swapImage, swapRect.Top);
+
+                            swapImage.RenderTransformOrigin = new Point(0.5, 0.5);
+                            var flipTrans = new ScaleTransform(-1, 1);
+
+                            swapImage.RenderTransform = flipTrans;
+                        }
+                        else
+                        {
+                            Canvas.SetLeft(swapImage, swapRect.Left);
+                            Canvas.SetTop(swapImage, swapRect.Top);
+                        }
+
+                        this.layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, snapshotSpan, null, swapImage, null);
+
+                        whichSwap = 1;
                     }
-
-                    var drawing = new GeometryDrawing(new SolidColorBrush(swapColor), swapPen, swapLine);
-                    drawing.Freeze();
-
-                    var drawingImage = new DrawingImage(drawing);
-                    drawingImage.Freeze();
-
-                    var swapImage = new Image
-                    {
-                        Source = drawingImage,
-                    };
-
-                    if (whichSwap == 1)
-                    {
-                        Canvas.SetLeft(swapImage, swapRect.Right - drawing.Bounds.Width);
-                        Canvas.SetTop(swapImage, swapRect.Top);
-
-                        swapImage.RenderTransformOrigin = new Point(0.5, 0.5);
-                        var flipTrans = new ScaleTransform(-1, 1);
-
-                        swapImage.RenderTransform = flipTrans;
-                    }
-                    else
-                    {
-                        Canvas.SetLeft(swapImage, swapRect.Left);
-                        Canvas.SetTop(swapImage, swapRect.Top);
-                    }
-
-                    this.layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, snapshotSpan, null, swapImage, null);
-
-                    whichSwap = 1;
                 }
             }
         }
