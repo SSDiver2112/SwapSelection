@@ -91,10 +91,10 @@ namespace SwapSelection
         private void MyQueryStatus(object sender, EventArgs e)
         {
             OleMenuCommand button = (OleMenuCommand)sender;
-            button.Visible = ValidateSelectionAsync();
+            button.Visible = ValidateSelection();
         }
 
-        private bool ValidateSelectionAsync()
+        private bool ValidateSelection()
         {
             m_textView = GetCurrentTextView();
 
