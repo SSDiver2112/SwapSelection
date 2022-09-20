@@ -9,7 +9,7 @@ or get the [CI build](http://vsixgallery.com/extension/cc65354e-e926-4e76-ac83-3
 
 ---------------------------------------
 
-Quickly swap two groups of selected text by taking advantage of the Multi-Selection capability in Visual Studio 2017 version 15.8 or newer.
+Quickly swap two groups of selected text by taking advantage of the Multi-Selection capability in Visual Studio 2022.
 
 See the [change log](CHANGELOG.md) for changes and road map.
 
